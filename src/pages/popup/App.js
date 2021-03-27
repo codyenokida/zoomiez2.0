@@ -43,7 +43,6 @@ function isMeetingEqual(meeting1, meeting2) {
 }
 
 // TODO: delete ones that are out of the date range
-// add delete functionality to ones that you dont want
 // add edit functionality to existing
 const App = () => {
 
@@ -93,6 +92,9 @@ const App = () => {
       let others = [];
       if (meetings !== undefined) {
         for (const meeting of meetings) {
+          if (meeting.date < (new Date()).setHours(0, 0, 0, 0)) {
+            removeMeeting(meeting);
+          }
           if (isToday(getDate(meeting.date, meeting.fromTime))) 
             todays.push(meeting);
           else if (isTomorrow(getDate(meeting.date, meeting.fromTime)))
