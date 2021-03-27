@@ -28,7 +28,7 @@ const today = new Date()
 const tomorrow = new Date(today)
 tomorrow.setDate(tomorrow.getDate() + 1)
 
-const Home = ({allMeetings}) => {
+const Home = ({allMeetings, removeMeeting}) => {
 
     const todayMeetings = allMeetings["todayMeetings"];
     const tomorrowMeetings = allMeetings["tomorrowMeetings"];
@@ -42,7 +42,7 @@ const Home = ({allMeetings}) => {
                 <>
                     <IndicatorContainer><b><Indicator>today</Indicator></b>  <DateIndicator>{new Date().getWeekDay()}</DateIndicator></IndicatorContainer>
                     {todayMeetings.map(meeting => {
-                        return <Meeting key={meeting.title} title={meeting.title} link={meeting.link} date={meeting.date} fromTime={meeting.fromTime} toTime={meeting.toTime} color={meeting.color}/>
+                        return <Meeting key={JSON.stringify(meeting)} id={JSON.stringify(meeting)} title={meeting.title} link={meeting.link} date={meeting.date} fromTime={meeting.fromTime} toTime={meeting.toTime} color={meeting.color} removeMeeting={removeMeeting}/>
                     })}
                 </>
                 : null
@@ -52,7 +52,7 @@ const Home = ({allMeetings}) => {
                 <>
                     <IndicatorContainer><b><Indicator>tomorrow</Indicator></b>  <DateIndicator>{tomorrow.getWeekDay()}</DateIndicator></IndicatorContainer>
                     {tomorrowMeetings.map(meeting => {
-                        return <Meeting key={meeting.title} title={meeting.title} link={meeting.link} date={meeting.date} fromTime={meeting.fromTime} toTime={meeting.toTime} color={meeting.color}/>
+                        return <Meeting key={JSON.stringify(meeting)} id={JSON.stringify(meeting)} title={meeting.title} link={meeting.link} date={meeting.date} fromTime={meeting.fromTime} toTime={meeting.toTime} color={meeting.color} removeMeeting={removeMeeting}/>
                     })}
                 </>
                 : null
@@ -62,7 +62,7 @@ const Home = ({allMeetings}) => {
                 <>
                     <IndicatorContainer><b><Indicator>upcoming meetings</Indicator></b> </IndicatorContainer>
                     {otherMeetings.map(meeting => {
-                        return <Meeting key={meeting.title} title={meeting.title} link={meeting.link} date={meeting.date} fromTime={meeting.fromTime} toTime={meeting.toTime} color={meeting.color}/>
+                        return <Meeting key={JSON.stringify(meeting)} id={JSON.stringify(meeting)} title={meeting.title} link={meeting.link} date={meeting.date} fromTime={meeting.fromTime} toTime={meeting.toTime} color={meeting.color} removeMeeting={removeMeeting}/>
                     })}
                 </>
                 : null

@@ -33,6 +33,15 @@ function getDate(date, fromTime) {
   return new Date(year, month - 1, day, hour, min);
 }
 
+function isMeetingEqual(meeting1, meeting2) {
+  return (meeting1.title === meeting2.title && 
+    meeting1.link === meeting2.link && 
+    meeting1.date === meeting2.date && 
+    meeting1.fromTime === meeting2.fromTime &&
+    meeting1.toTime === meeting2.toTime &&
+    meeting1.color === meeting1.color);
+}
+
 // TODO: delete ones that are out of the date range
 // add delete functionality to ones that you dont want
 // add edit functionality to existing
@@ -54,6 +63,27 @@ const App = () => {
       }
     })
   }, [])
+
+  const removeMeeting = (key) => {
+    let temp = [];
+    console.log(key);
+    storage.sync.get('meetings')
+    .then(({meetings}) => {
+      console.log(meetings);
+      if (meetings !== undefined) {
+        for (const meeting of meetings) {
+          if (!isMeetingEqual(key, meeting)) {
+            temp.push(meeting);
+          }
+        }
+        console.log(temp);
+        storage.sync.set({
+          meetings: temp
+      })
+      }
+    })
+    updateMeetings();
+  }
 
   const updateMeetings = () =>{
     storage.sync.get('meetings')
@@ -84,7 +114,7 @@ const App = () => {
       {isDashboard ?
         <>
           {updateMeetings()}
-          <Home allMeetings={allMeetings}/>
+          <Home allMeetings={allMeetings} removeMeeting={removeMeeting}/>
         </>
         :
         <AddMeeting toggle={() => setIsDashboard(!isDashboard)}/>

@@ -80,6 +80,9 @@ const ColorContainer = styled.div`
     }
     .circle-picker {
         margin-bottom: 0 !important;
+        & > span {
+            margin-right: 5px;
+        }
     }
     & > div > span > div {
         margin: 0 !important;
@@ -120,8 +123,16 @@ const AddMeeting = ({toggle}) => {
         const day = res[2];
         const year = res[0];
         // month is zero indexed
-        return new Date(year, month - 1, day);
+        const d = new Date(year, month - 1, day)
+        return d;
     }
+
+    const isToday = (someDate) => {
+        const today = new Date()
+        return someDate.getDate() == today.getDate() &&
+            someDate.getMonth() == today.getMonth() &&
+            someDate.getFullYear() == today.getFullYear();
+      }
 
     function sortByDate(meetings) {
         if (meetings === undefined)
@@ -182,10 +193,9 @@ const AddMeeting = ({toggle}) => {
         else 
             errors.link = '';
         // date verification
-        console.log(date, getDate(date), new Date())
         if (date.length === 0)
             errors.date = 'date is empty';
-        else if (getDate(date) < new Date()) // if date is less than today
+        else if (getDate(date) < (new Date()).setHours(0,0,0,0)) // if date is less than today
             errors.date = 'date cannot be before today.';
         else 
             errors.date = '';
@@ -239,7 +249,7 @@ const AddMeeting = ({toggle}) => {
 
     return (
         <div>
-            <p>add meeting!</p>
+            <p>add another meeting?</p>
             <form onSubmit={e => handleSubmit(e)}>
                 <InputContainer>
                     <input name="title" type="text" onChange={e => setTitle(e.target.value)} value={title} required></input>
@@ -263,7 +273,7 @@ const AddMeeting = ({toggle}) => {
                     <Error>{error["toTime"]}</Error>	
                 </TimeContainer>
                 <ColorContainer>
-                    <p>color</p>
+                    <p>tag:</p>
                     <CirclePicker colors={colors} color={color} onChange={e => setColor(e.hex)}/>
                 </ColorContainer>
                 <ButtonContainer>

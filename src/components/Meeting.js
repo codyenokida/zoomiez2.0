@@ -61,7 +61,7 @@ const Link = styled.a`
 
 const ButtonContainer = styled.div``;
 
-const Meeting = ({title, link, date, fromTime, toTime, color}) => {
+const Meeting = ({id, title, link, date, fromTime, toTime, color, removeMeeting}) => {
 
   function formatTime(time) {
     const x = time.split(":");
@@ -83,6 +83,7 @@ const Meeting = ({title, link, date, fromTime, toTime, color}) => {
       <ButtonContainer>
         <Button><Link href={link} target="_blank">join now</Link></Button>
       </ButtonContainer>
+      <a onClick={() => removeMeeting(JSON.parse(id))}>remove</a>
     </Box>
   );
 
